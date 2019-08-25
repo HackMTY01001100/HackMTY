@@ -10,7 +10,7 @@
     <link rel="shortcut icon" href="Images/favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="Images/favicon.ico" type="image/x-icon" />
     <link href="https://fonts.googleapis.com/css?family=Carrois+Gothic+SC&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="realdata_jda.css">
+    <link rel="stylesheet" href="Style/realdata_jda.css">
     <title>01001100 - JDA - Data</title>
   </head>
   <body>
@@ -31,7 +31,7 @@
         }
         $.ajax({
             type: "GET",
-            url: "https://drive.google.com/open?id=1aq9rI13Z00b3GIFCq0pC2OwHfEbVfq9t",
+            url: "",
             success: function (data) {
                 $('body').append(arrayToTable(Papa.parse(data).data));
             }

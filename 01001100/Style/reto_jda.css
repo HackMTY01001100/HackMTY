@@ -4,13 +4,16 @@
 }
 body {
   background-color: #474e5d;
-  font-family: Helvetica, sans-serif;
+  font-family: 'Carrois Gothic SC', sans-serif;
 }
 h1 {
   text-align: center;
   color: white;
   font-size: 50px;
   font-family: 'Carrois Gothic SC', sans-serif;
+}
+h2 {
+  font-size: 40px;
 }
 hr {
   margin: 10px 5%;
