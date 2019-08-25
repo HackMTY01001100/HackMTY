@@ -319,6 +319,24 @@
                     }
                 } )
 
+
+                let product_chart = document.createElement('canvas')
+                new Chart(product_chart, {
+                    type: 'pie', 
+                    data: {
+                        datasets: [{
+                            data: Object.keys(obj_products).map(i=>obj_products[i].quantity),
+                        }],
+                        labels: Object.keys(obj_products)
+                    },
+                    options: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                })
+                document.querySelector('.section_products').append(product_chart)
+
                 Object.keys(obj_products).sort((a,b)=>obj_products[b].quantity - obj_products[a].quantity).forEach((l,i)=>{
                     console.log(obj_products[l])
                     document.querySelector('.section_products').append( new UI.ListViewItemMaster(
