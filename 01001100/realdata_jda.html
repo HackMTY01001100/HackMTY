@@ -31,9 +31,9 @@
         }
         $.ajax({
             type: "GET",
-            url: "",
+            url: "http://10.22.153.64:8080",
             success: function (data) {
-                $('body').append(arrayToTable(Papa.parse(data).data));
+                $('body').append(arrayToTable(Papa.parse(data).daa));
             }
         });
     </script>

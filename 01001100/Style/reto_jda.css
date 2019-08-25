@@ -3,7 +3,7 @@
   box-sizing: border-box;
 }
 body {
-  background-color: #474e5d;
+  background-color: #ad1c34;
   font-family: 'Carrois Gothic SC', sans-serif;
 }
 h1 {
@@ -47,7 +47,7 @@ hr {
   height: 25px;
   right: -17px;
   background-color: white;
-  border: 4px solid #FF9F55;
+  border: 4px solid #52c0d1;
   top: 15px;
   border-radius: 50%;
   z-index: 1;
@@ -98,7 +98,7 @@ hr {
   text-align: center;
   color: white;
   text-decoration: none;
-  background-color: #b5734a;
+  background-color: #946edb;
   border-radius: 5%;
   padding: 20px 0;
 }
