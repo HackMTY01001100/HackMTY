@@ -1,0 +1,8 @@
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  background-color: #474e5d;
+  font-family: Helvetica, sans-serif;
+}

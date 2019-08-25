@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="MobileOptimized" content="width">
+    <link rel="shortcut icon" href="Images/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="Images/favicon.ico" type="image/x-icon" />
+    <link href="https://fonts.googleapis.com/css?family=Carrois+Gothic+SC&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Style/realdata_jda.css">
+    <title>01001100 - JDA - Data</title>
+  </head>
+  <body>
+
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.1.2/papaparse.js"></script>
+    <script>
+        function arrayToTable(tableData) {
+            var table = $('<table></table>');
+            $(tableData).each(function (i, rowData) {
+                var row = $('<tr></tr>');
+                $(rowData).each(function (j, cellData) {
+                    row.append($('<td>'+cellData+'</td>'));
+                });
+                table.append(row);
+            });
+            return table;
+        }
+        $.ajax({
+            type: "GET",
+            url: "http://10.22.153.64:8080",
+            success: function (data) {
+                $('body').append(arrayToTable(Papa.parse(data).daa));
+            }
+        });
+    </script>
+  </body>
+</html>
