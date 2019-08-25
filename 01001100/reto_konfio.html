@@ -3,7 +3,8 @@
 <head>
         <script src="https://ctrl-alt-tec.github.io/altUI/altUI.js?v=3"></script>
         <link href="https://ctrl-alt-tec.github.io/altUI/altUI.css" rel="stylesheet">
-
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://konfio.mx/css/mvc/design-system.css">
     <link rel="stylesheet" href="Style/reto_konfio.css">
     <meta charset="UTF-8">
@@ -124,10 +125,19 @@
     
     <script>
 
+
+        let cont_masterDetailView = document.createElement('div');
+        cont_masterDetailView.style.width="100%";
+        cont_masterDetailView.style.height='100%'
+        let UIAppBar = new UI.AppBar('','').setBackground('#7264C9').setColor('white');
+
+
+        let UIStackNavigator = new UI.StackNavigator(cont_masterDetailView, UIAppBar)
+
+
         let userID = new URL(window.location.href).searchParams.get("user");
 
-        let UIAppBar = new UI.AppBar('','').setBackground('#7264C9').setColor('white');
-        let UIMasterDetailView = new UI.MasterDetailView([]);
+        let UIMasterDetailView = new UI.MasterDetailView([], {stackNavigator: UIStackNavigator});
 
         let UIModal = new UI.Modal();
         
