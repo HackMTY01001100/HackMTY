@@ -121,8 +121,8 @@
 
 
     </section>
-    
-    
+
+
     <script>
 
 
@@ -140,12 +140,12 @@
         let UIMasterDetailView = new UI.MasterDetailView([], {stackNavigator: UIStackNavigator});
 
         let UIModal = new UI.Modal();
-        
+
         document.body.prepend(UIMasterDetailView.dom)
         document.body.prepend(UIAppBar.dom)
         document.body.append(UIModal.dom)
 
-        
+
 
 
 
@@ -192,7 +192,7 @@
                         obj_salesClient[i.emisorname].subtotal+=convertToNumber(i.subtotal)
                         obj_salesClient[i.emisorname].cost+=convertToNumber(i.cost)
                     }
-                }) 
+                })
                 let salesMaxClient = obj_salesClient[
                     Object.keys(obj_salesClient).sort((a,b) => obj_salesClient[b].total - obj_salesClient[a].total)[0]
                 ]
@@ -209,7 +209,7 @@
                             let date = document.createElement('span')
                             date.innerText = l.date
                             return date
-                        }(), l.emisorname, l.emisorrfc, 
+                        }(), l.emisorname, l.emisorrfc,
                         function(){
                             let total = document.createElement('span')
                             total.innerText = `$${l.total}`
@@ -262,7 +262,7 @@
                             let date = document.createElement('span')
                             date.innerText = l.date
                             return date
-                        }(), l.emisorname, l.emisorrfc, 
+                        }(), l.emisorname, l.emisorrfc,
                         function(){
                             let total = document.createElement('span')
                             total.innerText = `$${l.total}`
@@ -325,7 +325,7 @@
                     if(obj_products[i.productid] == undefined){
                         obj_products[i.productid] = {
                             id: i.productid,
-                            cost: convertToNumber(i.cost), 
+                            cost: convertToNumber(i.cost),
                             price: convertToNumber(i.quantity) != 0 ? convertToNumber(i.total)/convertToNumber(i.quantity) : convertToNumber(i.total),
                             quantity: convertToNumber(i.quantity)
                         }
@@ -349,7 +349,7 @@
 
                 let product_chart = document.createElement('canvas')
                 new Chart(product_chart, {
-                    type: 'pie', 
+                    type: 'pie',
                     data: {
                         datasets: [{
                             data: Object.keys(obj_products).map(i=>obj_products[i].quantity),
@@ -371,7 +371,7 @@
                             let price = document.createElement('span')
                             price.innerText = `$${obj_products[l].price.toLocaleString()}`
                             return price
-                        }(), l, `(Costo: $${ obj_products[l].cost })`, 
+                        }(), l, `(Costo: $${ obj_products[l].cost })`,
                         function(){
                             let quantity = document.createElement('span')
                             quantity.innerText = obj_products[l].quantity
@@ -385,10 +385,10 @@
                                 container.style.flexWrap='wrap';
                                 container.style.justifyContent='center';
                                 container.append( new UI.Heading(2, 'Detalles de producto '+l).dom )
-                                
+
                                 let chart = document.createElement('canvas')
                                 new Chart(chart, {
-                                    type: 'pie', 
+                                    type: 'pie',
                                     data: {
                                         datasets: [{
                                             data: [obj_products[l].quantity, sales_total_q-obj_products[l].quantity]
@@ -398,10 +398,10 @@
                                 chart.style.float = 'left'
                                 container.append(chart)
 
-                                container.append( new UI.CellViewItemKeyValue('Precio', '$'+obj_products[l].price.toLocaleString()).dom ) 
-                                container.append( new UI.CellViewItemKeyValue('Porcentaje de volumen', Math.round(obj_products[l].quantity*100/sales_total_q,2)+'%').dom ) 
-                                container.append( new UI.CellViewItemKeyValue('Porcentaje de ingresos', Math.round(obj_products[l].price*100/sales_total, 2 )+'%').dom ) 
-                                
+                                container.append( new UI.CellViewItemKeyValue('Precio', '$'+obj_products[l].price.toLocaleString()).dom )
+                                container.append( new UI.CellViewItemKeyValue('Porcentaje de volumen', Math.round(obj_products[l].quantity*100/sales_total_q,2)+'%').dom )
+                                container.append( new UI.CellViewItemKeyValue('Porcentaje de ingresos', Math.round(obj_products[l].price*100/sales_total, 2 )+'%').dom )
+
 
                                 return container
                             }(), l)
@@ -433,39 +433,39 @@
                     banks_count++
                 })
                 Object.keys(obj_banks).forEach(function(l,i){
-                    document.querySelector('.section_banks').append( new UI.CellViewItemKeyValue(l, 100-Math.round(obj_banks[l].subtotal*100/obj_banks[l].total)).dom ) 
+                    document.querySelector('.section_banks').append( new UI.CellViewItemKeyValue(l, 100-Math.round(obj_banks[l].subtotal*100/obj_banks[l].total)).dom )
                 })
                 document.querySelector('.bank_count>h3').innerHTML = banks_count
 
 
                 let section_income = {
-                    sectionItem: new UI.ListViewItemMaster(null, 'Ingresos', '', null).dom, 
+                    sectionItem: new UI.ListViewItemMaster(null, 'Ingresos', '', null).dom,
                     sectionName: 'Ingresos' ,
-                    sectionContent: document.querySelector('.section_income'), 
+                    sectionContent: document.querySelector('.section_income'),
                 }
                 UIMasterDetailView.addSection(section_income)
                 let section_expenses = {
-                    sectionItem: new UI.ListViewItemMaster(null, 'Gastos', '', null).dom, 
+                    sectionItem: new UI.ListViewItemMaster(null, 'Gastos', '', null).dom,
                     sectionName: 'Gastos' ,
-                    sectionContent: document.querySelector('.section_expenses'), 
+                    sectionContent: document.querySelector('.section_expenses'),
                 }
                 UIMasterDetailView.addSection(section_expenses)
                 let section_growth = {
-                    sectionItem: new UI.ListViewItemMaster(null, 'Crecimiento', '', null).dom, 
+                    sectionItem: new UI.ListViewItemMaster(null, 'Crecimiento', '', null).dom,
                     sectionName: 'Crecimiento' ,
-                    sectionContent: document.querySelector('.section_growth'), 
+                    sectionContent: document.querySelector('.section_growth'),
                 }
                 UIMasterDetailView.addSection(section_growth)
                 let section_products = {
-                    sectionItem: new UI.ListViewItemMaster(null, 'Productos', '', null).dom, 
+                    sectionItem: new UI.ListViewItemMaster(null, 'Productos', '', null).dom,
                     sectionName: 'Productos' ,
-                    sectionContent: document.querySelector('.section_products'), 
+                    sectionContent: document.querySelector('.section_products'),
                 }
                 UIMasterDetailView.addSection(section_products)
                 let section_banks = {
-                    sectionItem: new UI.ListViewItemMaster(null, 'Bancos', '', null).dom, 
+                    sectionItem: new UI.ListViewItemMaster(null, 'Bancos', '', null).dom,
                     sectionName: 'Bancos' ,
-                    sectionContent: document.querySelector('.section_banks'), 
+                    sectionContent: document.querySelector('.section_banks'),
                 }
                 UIMasterDetailView.addSection(section_banks)
                 callback( snapshot.val() )
