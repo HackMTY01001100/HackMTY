@@ -13,7 +13,7 @@ h1 {
   font-family: 'Carrois Gothic SC', sans-serif;
 }
 hr {
-  margin: 5px 5%;
+  margin: 10px 5%;
   border: 1px solid white;
 }
 .timeline {
@@ -88,8 +88,21 @@ hr {
   position: relative;
   border-radius: 6px;
 }
+.datas {
+  float: left;
+  width: 48%;
+  margin: 10px 1%;
+  text-align: center;
+  color: white;
+  text-decoration: none;
+  background-color: #b5734a;
+  border-radius: 5%;
+  padding: 20px 0;
+}
+.dataset {
+  background-color: #4ab577;
+}
 @media screen and (max-width: 600px) {
-  /* Place the timelime to the left */
   .timeline::after {
   left: 31px;
   }
