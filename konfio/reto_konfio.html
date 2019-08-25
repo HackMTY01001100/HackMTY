@@ -52,11 +52,17 @@
         </div>
 
         <div class="card-shadow expenses_max">
-                <h3 class="h3">q</h3>
-                <span>Tu gasto mas grande por venta</span>
-                <hr>
-                <h4 class="h4">q</h4>
-            </div>
+            <h3 class="h3">q</h3>
+            <span>Tu gasto mas grande por venta</span>
+            <hr>
+            <h4 class="h4">q</h4>
+        </div>
+        <div class="card-shadow expenses_maxSupplier">
+            <h3 class="h3">q</h3>
+            <span>Tu gasto mas grande por venta</span>
+            <hr>
+            <h4 class="h4">q</h4>
+        </div>
     </div>
 
 
@@ -154,6 +160,9 @@
 
                 document.querySelector('.expenses_max>h3').innerHTML = `$${expensesMax.total.toLocaleString()}`;
                 document.querySelector('.expenses_max>h4').innerHTML = expensesMax.receptorname != '' ? expensesMax.receptorname : expensesMax.receptorrfc;
+                
+                document.querySelector('.expenses_maxSupplier>h3').innerHTML = `$${expensesMaxSupplier.total.toLocaleString()}`;
+                document.querySelector('.expenses_maxSupplier>h4').innerHTML = expensesMaxSupplier.receptorname != '' ? expensesMaxSupplier.receptorname : expensesMaxSupplier.receptorrfc;
 
                 document.querySelector('.balance>h1').innerHTML = Number(sales_total-expenses_total).toLocaleString();
 
