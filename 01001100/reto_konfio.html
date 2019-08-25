@@ -3,9 +3,10 @@
 <head>
         <script src="https://ctrl-alt-tec.github.io/altUI/altUI.js?v=3"></script>
         <link href="https://ctrl-alt-tec.github.io/altUI/altUI.css" rel="stylesheet">
-
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://konfio.mx/css/mvc/design-system.css">
-    <link rel="stylesheet" href="reto_konfio.css">
+    <link rel="stylesheet" href="Style/reto_konfio.css">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <meta name="mobile-web-app-capable" content="yes">
@@ -124,10 +125,19 @@
     
     <script>
 
+
+        let cont_masterDetailView = document.createElement('div');
+        cont_masterDetailView.style.width="100%";
+        cont_masterDetailView.style.height='100%'
+        let UIAppBar = new UI.AppBar('','').setBackground('#7264C9').setColor('white');
+
+
+        let UIStackNavigator = new UI.StackNavigator(cont_masterDetailView, UIAppBar)
+
+
         let userID = new URL(window.location.href).searchParams.get("user");
 
-        let UIAppBar = new UI.AppBar('','').setBackground('#7264C9').setColor('white');
-        let UIMasterDetailView = new UI.MasterDetailView([]);
+        let UIMasterDetailView = new UI.MasterDetailView([], {stackNavigator: UIStackNavigator});
 
         let UIModal = new UI.Modal();
         
@@ -423,7 +433,7 @@
                     banks_count++
                 })
                 Object.keys(obj_banks).forEach(function(l,i){
-                    document.querySelector('.section_banks').append( new UI.CellViewItemKeyValue(l, 100-Math.round(obj_banks[l].subtotal*100/obj_banks[l].total)).dom ) 
+                    document.querySelector('.section_banks').append( new UI.CellViewItemKeyValue(l, 100-Math.round(obj_banks[l].subtotal*100/obj_banks[l].total)+'%').dom ) 
                 })
                 document.querySelector('.bank_count>h3').innerHTML = banks_count
 
