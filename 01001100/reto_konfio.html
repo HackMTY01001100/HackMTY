@@ -272,7 +272,7 @@
                         ).dom)
                 })
 
-                document.querySelector('.balance>h1').innerHTML = Number(sales_total-expenses_total).toLocaleString();
+                document.querySelector('.balance>h1').innerHTML = '$'+Number(sales_total-expenses_total).toLocaleString()+'MXN';
 
 
                 let timeSales = {}
@@ -308,7 +308,8 @@
                         labels: Object.keys(timeTransactions).map(i=>new Date(i*1000).toLocaleDateString()),
                         datasets: [{
                             label: 'Transacciones',
-                            data: Object.keys(timeTransactions).map(i=>timeTransactions[i])
+                            data: Object.keys(timeTransactions).map(i=>timeTransactions[i]),
+                            backgroundColor: '#526474',
                         }]
                     }
                 } )
@@ -341,7 +342,8 @@
                         labels: Object.keys(timeCosts).map(i=>new Date(i*1000).toLocaleDateString()),
                         datasets: [{
                             label: 'Transacciones',
-                            data: Object.keys(timeCosts).map(i=>timeCosts[i])
+                            data: Object.keys(timeCosts).map(i=>timeCosts[i]),
+                            backgroundColor: '#526474',
                         }]
                     }
                 } )
@@ -353,6 +355,7 @@
                     data: {
                         datasets: [{
                             data: Object.keys(obj_products).map(i=>obj_products[i].quantity),
+                            backgroundColor: '#526474',
                         }],
                         labels: Object.keys(obj_products)
                     },
@@ -391,7 +394,8 @@
                                     type: 'pie',
                                     data: {
                                         datasets: [{
-                                            data: [obj_products[l].quantity, sales_total_q-obj_products[l].quantity]
+                                            data: [obj_products[l].quantity, sales_total_q-obj_products[l].quantity],
+                                            backgroundColor: '#526474',
                                         }]
                                     }
                                 })
