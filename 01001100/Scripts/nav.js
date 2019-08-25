@@ -24,3 +24,11 @@ function stickyNav() {
     nav.classList.remove("navigation");
   }
 }
+
+function aJda() {
+  window.location = "reto_jda.html";
+}
+
+function aKonfio() {
+  window.location = "reto_konfio.html";
+}
