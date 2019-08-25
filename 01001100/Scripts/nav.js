@@ -30,5 +30,5 @@ function aJda() {
 }
 
 function aKonfio() {
-  window.location = "reto_konfio.html";
+  window.location = "login_konfio.html";
 }
