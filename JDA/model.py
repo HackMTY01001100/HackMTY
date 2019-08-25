@@ -65,7 +65,7 @@ print(df)
 #------ Modify input csv ------
 print("INICIANDO PROCESO CON INPUT DATA")
 df2 = pd.read_csv("input_data_pred.csv")
-df2o = df2
+df2o = pd.read_csv("input_data_pred.csv")
 #------fill missing values of price------
 median_price = math.floor(df2.price.median())
 print(median_price)
@@ -139,11 +139,11 @@ def sendvalues():
         query = np.array([array_data[i][0],array_data[i][1],array_data[i][2],array_data[i][3],array_data[i][6],array_data[i][7],array_data[i][8]])
         query = query.reshape(1,-1)
         #print(reg.predict(query))
-        prediction_values.append(reg.predict(query))
+        prediction_values.append(reg.predict(query)[0])
         i += 1
 
 sendvalues()    
-df['sa_quantity'] = pd.Series(prediction_values)
+df2o['sa_quantity'] = pd.Series(prediction_values)
 #df2o.insert(3,"sa_quantity",prediction_values,True)
 print(df2o)
 df2o.to_csv(r'.\Predicted_sales.csv')
