@@ -193,8 +193,15 @@ h2 {
      height: auto;
      width: 100%;
    }
+   .tarjeta {
+     width: 98%;
+   }
    .member_card img {
      height: auto;
      width: 95%;
+   }
+   .member_card {
+     width: 98%;
+     font-size: 0.8em;
    }
  }
