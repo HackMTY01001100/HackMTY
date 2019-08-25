@@ -1,7 +1,7 @@
 body{
-    padding: 16px
+    display: flex;
+    flex-direction: column
 }
-
 .balance{
     margin: 16px 0px;
     background: #7264C9
@@ -16,6 +16,15 @@ body{
     flex: 1
 }
 
-.sales_count{
+.sales_count, .expenses_count{
     background: #00DCB8
+}
+
+.card-shadow{
+    flex-shrink: 0px;
+    flex-direction: column;
+    display: flex
+}
+.altUI_ListViewItem{
+    padding-right: 18px
 }

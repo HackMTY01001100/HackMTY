@@ -23,74 +23,93 @@
 
 </head>
 <body>
-    <h1 class="h1-big main">Tu negocio</h1>
 
-    <div class="card balance">
-        <h1 class="h1-big"></h1>
+    <section class="section_balance">
+        <div class="card balance">
+            <h1 class="h1-big"></h1>
+        </div>
+    </section>
 
-    </div>
+    <section class="section_income">
+        <h2 class="h2">Tus ventas del periodo</h2>
+        <h1 class="sales h1"></h1>
+        <div class="flex_cont sales_cont">
+            <div class="card-shadow sales_count">
+                <h3 class="h3">q</h3>
+                <span>Numero de clientes en el periodo</span>
+            </div>
+            <div class="card-shadow sales_max">
+                <h3 class="h3">q</h3>
+                <span>Tu factura mas grande por venta</span>
+                <hr>
+                <h4 class="h4">q</h4>
+            </div>
+            <div class="card-shadow sales_maxClient">
+                <h3 class="h3">q</h3>
+                <span>Tu factura mas grande por cliente</span>
+                <hr>
+                <h4 class="h4">q</h4>
+            </div>
+        </div>
+        <h2 class="h2">Histórico</h2>
+        <canvas class="timeSales"></canvas>
 
-    <h2 class="h2">Tus ventas del periodo</h2>
-    <h1 class="sales h1"></h1>
-    <div class="flex_cont sales_cont">
-        <div class="card-shadow sales_count">
-            <h3 class="h3">q</h3>
-            <span>Numero de clientes en el periodo</span>
-        </div>
-        <div class="card-shadow sales_max">
-            <h3 class="h3">q</h3>
-            <span>Tu factura mas grande por venta</span>
-            <hr>
-            <h4 class="h4">q</h4>
-        </div>
-        <div class="card-shadow sales_maxClient">
-            <h3 class="h3">q</h3>
-            <span>Tu factura mas grande por venta</span>
-            <hr>
-            <h4 class="h4">q</h4>
-        </div>
-    </div>
+        <h2 class="h2">Ventas destacadas</h2>
 
-    <h2 class="h2">Resumen de gastos</h2>
-    <h1 class="expenses h1"></h1>
-    <div class="flex_cont expenses_cont">
-        <div class="card-shadow expenses_count">
-            <h3 class="h3">q</h3>
-            <span>Numero de proveedores en el periodo</span>
-        </div>
-        <div class="card-shadow expenses_max">
+    </section>
+
+    <section class="section_expenses">
+        <h2 class="h2">Resumen de gastos</h2>
+        <h1 class="expenses h1"></h1>
+        <div class="flex_cont expenses_cont">
+            <div class="card-shadow expenses_count">
+                <h3 class="h3">q</h3>
+                <span>Numero de proveedores en el periodo</span>
+            </div>
+            <div class="card-shadow expenses_max">
                 <h3 class="h3">q</h3>
                 <span>Tu gasto mas grande por venta</span>
                 <hr>
                 <h4 class="h4">q</h4>
             </div>
-    </div>
-    
-    <h2 class="h2">Evolucion</h2>
-    <canvas class="timeSales"></canvas>
-    <canvas class="timeTransactions"></canvas>
-    <canvas class="timeCosts"></canvas>
-    <canvas class="timeProfit"></canvas>
-    
+        </div>
+        <h2 class="h2">Impuestos</h2>
+        <div class="card-shadow expenses_taxes">
+            <h3 class="h3">q</h3>
+            <span>Total de impuestos</span>
+        </div>
+        <h2 class="h2">Histórico</h2>
+        <canvas class="timeCosts"></canvas>
+        <h2 class="h2">Gastos destacados</h2>
+    </section>
+    <section class="section_growth">
+        <h2 class="h2">Crecimiento</h2>
+        <canvas class="timeTransactions"></canvas>
+        <canvas class="timeProfit"></canvas>
+    </section>
+    <section class="section_products">
+        <h2 class="h2">Productos</h2>
+        <div class="flex_cont products_cont">
+            <div class="card-shadow product_max">
+                <h3 class="h3">q</h3>
+                <span>Numero de clientes en el periodo</span>
+            </div>
+        </div>
+
+    </section>
     
     
     <script>
 
         let userID = new URL(window.location.href).searchParams.get("user");
-        document.querySelector('.main').innerHTML = `Mi negocio: ${userID}`;
 
+        let UIAppBar = new UI.AppBar('','').setBackground('#7264C9');
         let UIMasterDetailView = new UI.MasterDetailView([]);
 
         document.body.prepend(UIMasterDetailView.dom)
+        document.body.prepend(UIAppBar.dom)
 
-        let section_income = {
-            sectionItem: new UI.ListViewItemMaster(null, 'Campañas', '', null).dom, 
-            sectionContent: document.createElement('div'), 
-            sectionName: 'Campañas' ,
-        }
-        UIMasterDetailView.addSection(section_income)
-
-
+        
 
 
 
@@ -115,11 +134,14 @@
         }
         function getData(userID, callback){
             firebase.database().ref(userID).once('value').then(snapshot=>{
+
+                UIAppBar.setTitle(`Mi negocio: ${userID}`)
+
                 let sales = [...snapshot.val().filter(i=>i.emisorrfc != userID)]
                 let sales_total = sales.reduce(function(a,b){
                     return({total: convertToNumber(a.total) + convertToNumber(b.total)})
                 }).total
-                let salesMax = [...sales.sort((a,b)=> b.total - a.total )][0]
+                let salesMax = [...sales.sort((a,b)=> b.total - a.total )]
                 let obj_salesClient = {}
                 sales.forEach(i=>{
                     if(obj_salesClient[i.emisorname] == undefined){
@@ -134,22 +156,32 @@
                         obj_salesClient[i.emisorname].subtotal+=convertToNumber(i.subtotal)
                         obj_salesClient[i.emisorname].cost+=convertToNumber(i.cost)
                     }
-                 })
-<<<<<<< HEAD
-            
-=======
-
->>>>>>> dcfe1675604f67ff9946a9aad62881c2c9d2b5a1
+                }) 
                 let salesMaxClient = obj_salesClient[
                     Object.keys(obj_salesClient).sort((a,b) => obj_salesClient[b].total - obj_salesClient[a].total)[0]
                 ]
-
                 document.querySelector('.sales').innerHTML = `$${sales_total.toLocaleString()}`;
                 document.querySelector('.sales_count>h3').innerHTML = Object.keys(obj_salesClient).length;
-                document.querySelector('.sales_max>h3').innerHTML = `$${salesMax.total.toLocaleString()}`;
-                document.querySelector('.sales_max>h4').innerHTML = salesMax.emisorname;
+                document.querySelector('.sales_max>h3').innerHTML = `$${salesMax[0].total.toLocaleString()}`;
+                document.querySelector('.sales_max>h4').innerHTML = salesMax[0].emisorname;
                 document.querySelector('.sales_maxClient>h3').innerHTML = `$${salesMaxClient.total.toLocaleString()}`;
                 document.querySelector('.sales_maxClient>h4').innerHTML = salesMaxClient.emisorname != '' ? salesMaxClient.emisorname : salesMaxClient.emisorrfc ;
+
+                salesMax.slice(0,6).forEach((l,i)=>{
+                    document.querySelector('.section_income').append( new UI.ListViewItemMaster(
+                        function(){
+                            let date = document.createElement('span')
+                            date.innerText = l.date
+                            return date
+                        }(), l.emisorname, l.emisorrfc, 
+                        function(){
+                            let total = document.createElement('span')
+                            total.innerText = `$${l.total}`
+                            return total
+                        }(),
+                        {leftIcon: false}
+                        ).dom)
+                })
 
                 let expenses = [...snapshot.val().filter(i=>i.emisorrfc==userID)]
                 let expenses_total = expenses.reduce(function(a,b){
@@ -181,9 +213,28 @@
 
                 document.querySelector('.expenses').innerHTML = `$${expenses_total.toLocaleString()}`;
                 document.querySelector('.expenses_count>h3').innerHTML = Object.keys(obj_expensesSuppliers).length;
-
                 document.querySelector('.expenses_max>h3').innerHTML = `$${expensesMax.total.toLocaleString()}`;
                 document.querySelector('.expenses_max>h4').innerHTML = expensesMax.receptorname != '' ? expensesMax.receptorname : expensesMax.receptorrfc;
+
+                document.querySelector('.expenses_taxes>h3').innerHTML = `$${Number(sales_total - sales.reduce(function(a,b){
+                    return({subtotal: convertToNumber(a.subtotal) + convertToNumber(b.subtotal)})
+                }).subtotal).toLocaleString()}`
+
+                salesMax.slice(0,6).forEach((l,i)=>{
+                    document.querySelector('.section_expenses').append( new UI.ListViewItemMaster(
+                        function(){
+                            let date = document.createElement('span')
+                            date.innerText = l.date
+                            return date
+                        }(), l.emisorname, l.emisorrfc, 
+                        function(){
+                            let total = document.createElement('span')
+                            total.innerText = `$${l.total}`
+                            return total
+                        }(),
+                        {leftIcon: false}
+                        ).dom)
+                })
 
                 document.querySelector('.balance>h1').innerHTML = Number(sales_total-expenses_total).toLocaleString();
 
@@ -227,13 +278,24 @@
                 } )
 
                 let timeCosts = {}
+                let obj_products = {}
                 snapshot.val().map(i=>{
                     if( timeCosts[new Date(i.date).getTime()/1000] == undefined ){
                         timeCosts[new Date(i.date).getTime()/1000] = 1
                     } else {
                         timeCosts[new Date(i.date).getTime()/1000] ++
                     }
+                    if(obj_products[i.productid] == undefined){
+                        obj_products[i.productid] = {
+                            cost: convertToNumber(i.cost), 
+                            price: convertToNumber(i.total)/convertToNumber(i.quantity),
+                            quantity: convertToNumber(i.quantity)
+                        }
+                    } else {
+                        obj_products[i.productid].quantity += convertToNumber(i.quantity);
+                    }
                 })
+                //console.log(obj_products)
                 new Chart( document.querySelector('.timeCosts'), {
                     type: 'line',
                     data: {
@@ -245,7 +307,52 @@
                     }
                 } )
 
-                //console.log(snapshot.val())
+                Object.keys(obj_products).sort((a,b)=>obj_products[b].quantity - obj_products[a].quantity).forEach((l,i)=>{
+                    document.querySelector('.section_products').append( new UI.ListViewItemMaster(
+                        function(){
+                            let price = document.createElement('span')
+                            price.innerText = obj_products[l].price.toLocaleString()
+                            return price
+                        }(), l, `(Costo: $${ obj_products[l].cost })`, 
+                        function(){
+                            let quantity = document.createElement('span')
+                            quantity.innerText = obj_products[l].quantity
+                            return quantity
+                        }(),
+                        {leftIcon: false}
+                        ).dom)
+                })
+
+                let product_max = obj_products[Object.keys(obj_products).sort((a,b)=> obj_products[b].cost/obj_products[b].total - obj_products[a].cost/obj_products[a].total )[0]]
+
+
+                console.log('max', product_max)
+
+
+                let section_income = {
+                    sectionItem: new UI.ListViewItemMaster(null, 'Ingresos', '', null).dom, 
+                    sectionName: 'Ingresos' ,
+                    sectionContent: document.querySelector('.section_income'), 
+                }
+                UIMasterDetailView.addSection(section_income)
+                let section_expenses = {
+                    sectionItem: new UI.ListViewItemMaster(null, 'Gastos', '', null).dom, 
+                    sectionName: 'Gastos' ,
+                    sectionContent: document.querySelector('.section_expenses'), 
+                }
+                UIMasterDetailView.addSection(section_expenses)
+                let section_growth = {
+                    sectionItem: new UI.ListViewItemMaster(null, 'Crecimiento', '', null).dom, 
+                    sectionName: 'Crecimiento' ,
+                    sectionContent: document.querySelector('.section_growth'), 
+                }
+                UIMasterDetailView.addSection(section_growth)
+                let section_products = {
+                    sectionItem: new UI.ListViewItemMaster(null, 'Productos', '', null).dom, 
+                    sectionName: 'Productos' ,
+                    sectionContent: document.querySelector('.section_products'), 
+                }
+                UIMasterDetailView.addSection(section_products)
                 callback( snapshot.val() )
             })
         }
