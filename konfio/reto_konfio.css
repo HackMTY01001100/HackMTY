@@ -16,7 +16,7 @@ body{
     flex: 1
 }
 
-.sales_count, .expenses_count{
+.sales_count, .expenses_count, .product_count{
     background: #00DCB8
 }
 

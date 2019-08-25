@@ -90,9 +90,15 @@
     <section class="section_products">
         <h2 class="h2">Productos</h2>
         <div class="flex_cont products_cont">
+            <div class="card-shadow product_count">
+                <h3 class="h3">q</h3>
+                <span>Numero de productos</span>
+            </div>
             <div class="card-shadow product_max">
                 <h3 class="h3">q</h3>
-                <span>Numero de clientes en el periodo</span>
+                <span>Producto mas rentable</span>
+                <hr>
+                <h4 class="h4">q</h4>
             </div>
         </div>
 
@@ -103,11 +109,14 @@
 
         let userID = new URL(window.location.href).searchParams.get("user");
 
-        let UIAppBar = new UI.AppBar('','').setBackground('#7264C9');
+        let UIAppBar = new UI.AppBar('','').setBackground('#7264C9').setColor('white');
         let UIMasterDetailView = new UI.MasterDetailView([]);
 
+        let UIModal = new UI.Modal();
+        
         document.body.prepend(UIMasterDetailView.dom)
         document.body.prepend(UIAppBar.dom)
+        document.body.append(UIModal.dom)
 
         
 
@@ -279,6 +288,7 @@
 
                 let timeCosts = {}
                 let obj_products = {}
+                let sales_total_q = 0
                 snapshot.val().map(i=>{
                     if( timeCosts[new Date(i.date).getTime()/1000] == undefined ){
                         timeCosts[new Date(i.date).getTime()/1000] = 1
@@ -287,13 +297,15 @@
                     }
                     if(obj_products[i.productid] == undefined){
                         obj_products[i.productid] = {
+                            id: i.productid,
                             cost: convertToNumber(i.cost), 
-                            price: convertToNumber(i.total)/convertToNumber(i.quantity),
+                            price: convertToNumber(i.quantity) != 0 ? convertToNumber(i.total)/convertToNumber(i.quantity) : convertToNumber(i.total),
                             quantity: convertToNumber(i.quantity)
                         }
                     } else {
                         obj_products[i.productid].quantity += convertToNumber(i.quantity);
                     }
+                    sales_total_q+=convertToNumber(i.quantity)
                 })
                 //console.log(obj_products)
                 new Chart( document.querySelector('.timeCosts'), {
@@ -308,10 +320,11 @@
                 } )
 
                 Object.keys(obj_products).sort((a,b)=>obj_products[b].quantity - obj_products[a].quantity).forEach((l,i)=>{
+                    console.log(obj_products[l])
                     document.querySelector('.section_products').append( new UI.ListViewItemMaster(
                         function(){
                             let price = document.createElement('span')
-                            price.innerText = obj_products[l].price.toLocaleString()
+                            price.innerText = `$${obj_products[l].price.toLocaleString()}`
                             return price
                         }(), l, `(Costo: $${ obj_products[l].cost })`, 
                         function(){
@@ -320,14 +333,41 @@
                             return quantity
                         }(),
                         {leftIcon: false}
-                        ).dom)
+                        ).onClick(()=>{
+                            UIModal.show(function(){
+                                let container = document.createElement('div');
+                                container.style.display='flex';
+                                container.style.flexWrap='wrap';
+                                container.style.justifyContent='center';
+                                container.append( new UI.Heading(2, 'Detalles de producto '+l).dom )
+                                
+                                let chart = document.createElement('canvas')
+                                new Chart(chart, {
+                                    type: 'pie', 
+                                    data: {
+                                        datasets: [{
+                                            data: [obj_products[l].quantity, sales_total_q-obj_products[l].quantity]
+                                        }]
+                                    }
+                                })
+                                chart.style.float = 'left'
+                                container.append(chart)
+
+                                container.append( new UI.CellViewItemKeyValue('Precio', '$'+obj_products[l].price.toLocaleString()).dom ) 
+                                container.append( new UI.CellViewItemKeyValue('Porcentaje de volumen', Math.round(obj_products[l].quantity*100/sales_total_q,2)+'%').dom ) 
+                                container.append( new UI.CellViewItemKeyValue('Porcentaje de ingresos', Math.round(obj_products[l].price*100/sales_total, 2 )+'%').dom ) 
+                                
+
+                                return container
+                            }(), l)
+                        }).dom)
                 })
 
                 let product_max = obj_products[Object.keys(obj_products).sort((a,b)=> obj_products[b].cost/obj_products[b].total - obj_products[a].cost/obj_products[a].total )[0]]
 
-
-                console.log('max', product_max)
-
+                document.querySelector('.product_count>h3').innerHTML = Object.keys(obj_products).length
+                document.querySelector('.product_max>h3').innerHTML = product_max.id
+                document.querySelector('.product_max>h4').innerHTML = `${product_max.quantity} unidades`
 
                 let section_income = {
                     sectionItem: new UI.ListViewItemMaster(null, 'Ingresos', '', null).dom, 
