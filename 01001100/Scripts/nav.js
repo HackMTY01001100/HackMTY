@@ -25,10 +25,10 @@ function stickyNav() {
   }
 }
 
-var a=document.getElementsByTagName("a");
-for(var i=0;i<a.length;i++){
-    a[i].onclick=function(){
-        window.location=this.getAttribute("href");
-        return false;
-    }
+function aJda() {
+  window.location = "reto_jda.html";
+}
+
+function aKonfio() {
+  window.location = "reto_konfio.html";
 }
