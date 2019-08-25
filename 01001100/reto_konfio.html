@@ -433,11 +433,7 @@
                     banks_count++
                 })
                 Object.keys(obj_banks).forEach(function(l,i){
-<<<<<<< HEAD
-                    document.querySelector('.section_banks').append( new UI.CellViewItemKeyValue(l, 100-Math.round(obj_banks[l].subtotal*100/obj_banks[l].total)).dom )
-=======
-                    document.querySelector('.section_banks').append( new UI.CellViewItemKeyValue(l, 100-Math.round(obj_banks[l].subtotal*100/obj_banks[l].total)+'%').dom ) 
->>>>>>> 7f778deaf1c6350d8397da92103ce49df5340af9
+                    document.querySelector('.section_banks').append( new UI.CellViewItemKeyValue(l, 100-Math.round(obj_banks[l].subtotal*100/obj_banks[l].total)+'%').dom )
                 })
                 document.querySelector('.bank_count>h3').innerHTML = banks_count
 
