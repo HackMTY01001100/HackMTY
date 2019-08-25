@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+        <script src="https://ctrl-alt-tec.github.io/altUI/altUI.js?v=3"></script>
+        <link href="https://ctrl-alt-tec.github.io/altUI/altUI.css" rel="stylesheet">
+
     <link rel="stylesheet" href="https://konfio.mx/css/mvc/design-system.css">
     <link rel="stylesheet" href="reto_konfio.css">
     <meta charset="UTF-8">
@@ -12,15 +15,17 @@
     <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/5.10.1/firebase-database.js"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.css" integrity="sha256-IvM9nJf/b5l2RoebiFno92E5ONttVyaEEsdemDC6iQA=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js" integrity="sha256-arMsf+3JJK2LoTGqxfnuJPFTU4hAK57MtIPdFpiHXOU=" crossorigin="anonymous"></script>
+
 </head>
 <body>
-    <h1 class="h1-big py-4 bg-purple-bright">Tu negocio</h1>
+    <h1 class="h1-big main">Tu negocio</h1>
 
     <div class="card balance">
         <h1 class="h1-big"></h1>
 
     </div>
-
 
     <h2 class="h2">Tus ventas del periodo</h2>
     <h1 class="sales h1"></h1>
@@ -50,7 +55,6 @@
             <h3 class="h3">q</h3>
             <span>Numero de proveedores en el periodo</span>
         </div>
-
         <div class="card-shadow expenses_max">
             <h3 class="h3">q</h3>
             <span>Tu gasto mas grande por venta</span>
@@ -64,11 +68,35 @@
             <h4 class="h4">q</h4>
         </div>
     </div>
-
-
-
-
+    
+    <h2 class="h2">Evolucion</h2>
+    <canvas class="timeSales"></canvas>
+    <canvas class="timeTransactions"></canvas>
+    <canvas class="timeCosts"></canvas>
+    <canvas class="timeProfit"></canvas>
+    
+    
+    
     <script>
+
+        let userID = new URL(window.location.href).searchParams.get("user");
+        document.querySelector('.main').innerHTML = `Mi negocio: ${userID}`;
+
+        let UIMasterDetailView = new UI.MasterDetailView([]);
+
+        document.body.prepend(UIMasterDetailView.dom)
+
+        let section_income = {
+            sectionItem: new UI.ListViewItemMaster(null, 'Campañas', '', null).dom, 
+            sectionContent: document.createElement('div'), 
+            sectionName: 'Campañas' ,
+        }
+        UIMasterDetailView.addSection(section_income)
+
+
+
+
+
 
         firebase.initializeApp({
             apiKey: "AIzaSyCs9-07jyUUBzLfjLvM_0CaGHv-fseAQ6c",
@@ -88,18 +116,13 @@
                 return Number(num.replace(',','.'))
             }
         }
-        let sales;
         function getData(userID, callback){
             firebase.database().ref(userID).once('value').then(snapshot=>{
-
-
-                sales = [...snapshot.val().filter(i=>i.emisorrfc != userID)]
+                let sales = [...snapshot.val().filter(i=>i.emisorrfc != userID)]
                 let sales_total = sales.reduce(function(a,b){
                     return({total: convertToNumber(a.total) + convertToNumber(b.total)})
                 }).total
-
                 let salesMax = [...sales.sort((a,b)=> b.total - a.total )][0]
-
                 let obj_salesClient = {}
                 sales.forEach(i=>{ 
                     if(obj_salesClient[i.emisorname] == undefined){
@@ -115,7 +138,7 @@
                         obj_salesClient[i.emisorname].cost+=convertToNumber(i.cost)
                     }
                  })
-                
+            
                 let salesMaxClient = obj_salesClient[
                     Object.keys(obj_salesClient).sort((a,b) => obj_salesClient[b].total - obj_salesClient[a].total)[0]
                 ]
@@ -167,14 +190,68 @@
                 document.querySelector('.balance>h1').innerHTML = Number(sales_total-expenses_total).toLocaleString();
 
 
-                console.log(expenses)
+                let timeSales = {}
+                snapshot.val().map(i=>{
+                    if( timeSales[new Date(i.date).getTime()/1000] == undefined ){
+                        timeSales[new Date(i.date).getTime()/1000] = convertToNumber(i.total)
+                    } else {
+                        timeSales[new Date(i.date).getTime()/1000] += convertToNumber(i.total)
+                    }
+                })
+                new Chart( document.querySelector('.timeSales'), {
+                    type: 'line',
+                    data: {
+                        labels: Object.keys(timeSales).map(i=>new Date(i*1000).toLocaleDateString()),
+                        datasets: [{
+                            label: 'Ingresos',
+                            data: Object.keys(timeSales).map(i=>timeSales[i])
+                        }]
+                    }
+                } )
 
+                let timeTransactions = {}
+                snapshot.val().map(i=>{
+                    if( timeTransactions[new Date(i.date).getTime()/1000] == undefined ){
+                        timeTransactions[new Date(i.date).getTime()/1000] = 1
+                    } else {
+                        timeTransactions[new Date(i.date).getTime()/1000] ++
+                    }
+                })
+                new Chart( document.querySelector('.timeTransactions'), {
+                    type: 'line',
+                    data: {
+                        labels: Object.keys(timeTransactions).map(i=>new Date(i*1000).toLocaleDateString()),
+                        datasets: [{
+                            label: 'Transacciones',
+                            data: Object.keys(timeTransactions).map(i=>timeTransactions[i])
+                        }]
+                    }
+                } )
+
+                let timeCosts = {}
+                snapshot.val().map(i=>{
+                    if( timeCosts[new Date(i.date).getTime()/1000] == undefined ){
+                        timeCosts[new Date(i.date).getTime()/1000] = 1
+                    } else {
+                        timeCosts[new Date(i.date).getTime()/1000] ++
+                    }
+                })
+                new Chart( document.querySelector('.timeCosts'), {
+                    type: 'line',
+                    data: {
+                        labels: Object.keys(timeCosts).map(i=>new Date(i*1000).toLocaleDateString()),
+                        datasets: [{
+                            label: 'Transacciones',
+                            data: Object.keys(timeCosts).map(i=>timeCosts[i])
+                        }]
+                    }
+                } )
 
                 //console.log(snapshot.val())
                 callback( snapshot.val() )
             })
         }
-        getData('TAF100112H1A', function(data){
+        getData(userID, function(data){
             console.log(data)
         })
     </script>

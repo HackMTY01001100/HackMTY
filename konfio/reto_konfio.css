@@ -12,6 +12,10 @@ body{
     display: flex;
 }
 
+.flex_cont *{
+    flex: 1
+}
+
 .sales_count{
     background: #00DCB8
 }
