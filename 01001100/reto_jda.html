@@ -66,7 +66,39 @@
     </div>
   </div>
 </div>
+<table style="width:100%">
+  <tr>
+    <td>
+
+    </td>
+    <td>
+      
+    </td>
+  </tr>
 <img src="Images/graph.jpeg" class="graph">
+<div class="card" style="background-color: rgb(255, 255, 255)">
+  <h1 style="color: black">Explanation</h1>
+  <p>
+    This machine learning model developed for JDA utilizes multivariable regression to predict future sales.  Based on data from previous years.
+    <br>
+    The program is divided into 7 steps:
+    <br>
+    1.	Filling missing values from the data frame with average sales number from the category
+    <br>
+    2.	Replaces events into binary values to stablish weights for its impact on sales
+    <br>
+    3.	Replaces location with price average per location since there is a correlation
+    <br>
+    4.	Replaces date into day of the week to stablish weight for each by the sales it performs each day
+    <br>
+    5.	Modifies de input csv with the previous steps
+    <br>
+    6.	Obtains the regression coefficient and intercept, then performs the regression for  a year (184 entries), thus calculating the sales for that year based on the variables
+    <br>
+    7.	The model then exports the predicted sales into a csv on the root directory
+
+  </p>
+</div>
     <hr>
     <div class="csvs">
       <a href="https://drive.google.com/file/d/1aq9rI13Z00b3GIFCq0pC2OwHfEbVfq9t/view?usp=sharing" class="dataset datas">
@@ -76,5 +108,6 @@
         Predicted Data
       </a>
     </div>
+    
   </body>
 </html>
