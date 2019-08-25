@@ -9,6 +9,10 @@ hr {
   margin: 10px 3%;
   border: 0.5px solid #e34c00;
 }
+h1 {
+  font-size: 50px;
+  text-shadow: 1px 1px #e34c00;
+}
 h2 {
   font-size: 40px;
   font-family: 'Carrois Gothic SC', sans-serif;
@@ -182,5 +186,15 @@ h2 {
      float: none;
      display: block;
      text-align: left;
+   }
+ }
+ @media screen and (max-width: 850px) {
+   .tarjeta img {
+     height: auto;
+     width: 100%;
+   }
+   .member_card img {
+     height: auto;
+     width: 95%;
    }
  }
