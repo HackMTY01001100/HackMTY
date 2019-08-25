@@ -7,8 +7,11 @@
     <link rel="stylesheet" href="https://konfio.mx/css/mvc/design-system.css">
     <link rel="stylesheet" href="reto_konfio.css">
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="MobileOptimized" content="width">
     <title>Konfio</title>
 
     <!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
@@ -56,17 +59,11 @@
             <span>Numero de proveedores en el periodo</span>
         </div>
         <div class="card-shadow expenses_max">
-            <h3 class="h3">q</h3>
-            <span>Tu gasto mas grande por venta</span>
-            <hr>
-            <h4 class="h4">q</h4>
-        </div>
-        <div class="card-shadow expenses_maxSupplier">
-            <h3 class="h3">q</h3>
-            <span>Tu gasto mas grande por venta</span>
-            <hr>
-            <h4 class="h4">q</h4>
-        </div>
+                <h3 class="h3">q</h3>
+                <span>Tu gasto mas grande por venta</span>
+                <hr>
+                <h4 class="h4">q</h4>
+            </div>
     </div>
     
     <h2 class="h2">Evolucion</h2>
@@ -124,7 +121,7 @@
                 }).total
                 let salesMax = [...sales.sort((a,b)=> b.total - a.total )][0]
                 let obj_salesClient = {}
-                sales.forEach(i=>{ 
+                sales.forEach(i=>{
                     if(obj_salesClient[i.emisorname] == undefined){
                         obj_salesClient[i.emisorname] = {
                             emisorname: i.emisorname,
@@ -138,11 +135,15 @@
                         obj_salesClient[i.emisorname].cost+=convertToNumber(i.cost)
                     }
                  })
+<<<<<<< HEAD
             
+=======
+
+>>>>>>> dcfe1675604f67ff9946a9aad62881c2c9d2b5a1
                 let salesMaxClient = obj_salesClient[
                     Object.keys(obj_salesClient).sort((a,b) => obj_salesClient[b].total - obj_salesClient[a].total)[0]
                 ]
-            
+
                 document.querySelector('.sales').innerHTML = `$${sales_total.toLocaleString()}`;
                 document.querySelector('.sales_count>h3').innerHTML = Object.keys(obj_salesClient).length;
                 document.querySelector('.sales_max>h3').innerHTML = `$${salesMax.total.toLocaleString()}`;
@@ -160,7 +161,7 @@
                 console.log(expenses_total)
 
                 let obj_expensesSuppliers = {}
-                expenses.forEach(i=>{ 
+                expenses.forEach(i=>{
                     if(obj_expensesSuppliers[i.receptorname] == undefined){
                         obj_expensesSuppliers[i.receptorname] = {
                             receptorname: i.receptorname,
@@ -177,15 +178,12 @@
                 let expensesMaxSupplier = obj_expensesSuppliers[
                     Object.keys(obj_expensesSuppliers).sort((a,b) => obj_expensesSuppliers[b].total - obj_expensesSuppliers[a].total)[0]
                 ]
-                
+
                 document.querySelector('.expenses').innerHTML = `$${expenses_total.toLocaleString()}`;
                 document.querySelector('.expenses_count>h3').innerHTML = Object.keys(obj_expensesSuppliers).length;
 
                 document.querySelector('.expenses_max>h3').innerHTML = `$${expensesMax.total.toLocaleString()}`;
                 document.querySelector('.expenses_max>h4').innerHTML = expensesMax.receptorname != '' ? expensesMax.receptorname : expensesMax.receptorrfc;
-                
-                document.querySelector('.expenses_maxSupplier>h3').innerHTML = `$${expensesMaxSupplier.total.toLocaleString()}`;
-                document.querySelector('.expenses_maxSupplier>h4').innerHTML = expensesMaxSupplier.receptorname != '' ? expensesMaxSupplier.receptorname : expensesMaxSupplier.receptorrfc;
 
                 document.querySelector('.balance>h1').innerHTML = Number(sales_total-expenses_total).toLocaleString();
 
