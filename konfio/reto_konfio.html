@@ -103,6 +103,18 @@
         </div>
 
     </section>
+    <section class="section_banks">
+        <h2 class="h2">Bancos</h2>
+        <div class="flex_cont banks_cont">
+            <div class="card-shadow bank_count">
+                <h3 class="h3">q</h3>
+                <span>Numero de transacciones con bancos</span>
+            </div>
+        </div>
+        <h2 class="h2">Tasas de interés</h2>
+
+
+    </section>
     
     
     <script>
@@ -387,6 +399,30 @@
                 document.querySelector('.product_max>h3').innerHTML = product_max.id
                 document.querySelector('.product_max>h4').innerHTML = `${product_max.quantity} unidades`
 
+
+
+                let banks = [...sales.filter(i=> i.emisorname.includes('BANCO') || i.emisorname.includes('BBV') ) || i.emisorname.includes('HSBC') || i.emisorname.includes('UNION')]
+                let obj_banks = {}
+                let banks_count = 0;
+                banks.forEach(function(l,i){
+                    if(obj_banks[l.emisorname] == undefined){
+                        obj_banks[l.emisorname] = {
+                            name: l.emisorname,
+                            total: convertToNumber(l.total),
+                            subtotal: convertToNumber(l.subtotal)
+                        }
+                    } else {
+                        obj_banks[l.emisorname].total+=convertToNumber(l.total)
+                        obj_banks[l.emisorname].subtotal+=convertToNumber(l.subtotal)
+                    }
+                    banks_count++
+                })
+                Object.keys(obj_banks).forEach(function(l,i){
+                    document.querySelector('.section_banks').append( new UI.CellViewItemKeyValue(l, 100-Math.round(obj_banks[l].subtotal*100/obj_banks[l].total)).dom ) 
+                })
+                document.querySelector('.bank_count>h3').innerHTML = banks_count
+
+
                 let section_income = {
                     sectionItem: new UI.ListViewItemMaster(null, 'Ingresos', '', null).dom, 
                     sectionName: 'Ingresos' ,
@@ -411,6 +447,12 @@
                     sectionContent: document.querySelector('.section_products'), 
                 }
                 UIMasterDetailView.addSection(section_products)
+                let section_banks = {
+                    sectionItem: new UI.ListViewItemMaster(null, 'Bancos', '', null).dom, 
+                    sectionName: 'Bancos' ,
+                    sectionContent: document.querySelector('.section_banks'), 
+                }
+                UIMasterDetailView.addSection(section_banks)
                 callback( snapshot.val() )
             })
         }
